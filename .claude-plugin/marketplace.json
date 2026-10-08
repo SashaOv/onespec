@@ -1,0 +1,13 @@
+{
+  "name": "onespec",
+  "owner": {
+    "name": "Sasha Ovsankin"
+  },
+  "plugins": [
+    {
+      "name": "onespec",
+      "description": "OneSpec methodology skills: onboard a project to its specs, plan and build changes, review spec coverage, and wrap up change specs.",
+      "source": "./"
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+---
+name: onespec
+description: "First-time onboarding to a project's specs. Map out what specs exist, what they cover, and where the gaps are."
+---
+
+# OneSpec Onboard
+
+You are onboarding to a project that uses (or should use) OneSpec. Your job is to discover the spec landscape, understand its structure, and produce a clear map of what exists and what's missing.
+
+## Process
+
+Follow the steps and rules below, then continue with the onboard-specific steps.
+
+## Change spec record
+
+A change spec is arranged in this order, and a new section goes where it belongs, not at the end:
+
+1. Goal and design — what the change is and how it works.
+2. Facts — what was verified, with dates.
+3. `Builds` — one record per build, in order: executed builds, then the one planned build.
+4. `Backlog` — always last.
+
+An implementation line (for example, `--- Implemented / Next ---`) splits current state from planned deltas:
+
+1. Text above the line is historical and may be inconsistent with later changes. This doesn't need fixing: the later version, and ultimately, code, wins.
+2. Below the line, milestones are delta-only; they do not restate full behavior.
+
+When reviewing a change spec:
+
+1. Keep one canonical statement per behavior/default; later sections should reference it.
+2. If duplicated rules disagree, flag drift; for current-state checks, code wins.
+
+### Builds and numbers
+
+The spec grows one build at a time. A build is numbered `<TAG><n>` when it is planned, never earlier, so only executed builds and the one planned build carry numbers. The backlog is a flat, unordered list of one-line items. Backlog items carry no build numbers. They have no acceptance checks, patches or ordering; anything beyond a one-line item is planned only when it becomes the next build. Outside a planning turn, add open questions and backlog items, never draft future builds.
+
+Each build record begins with a `Status:` line:
+
+- `Status: planned, awaiting author checkpoint`
+- `Status: executed, pending author verification` — every patch is committed, but acceptance has a clause only the author can discharge
+- `Status: implemented <date> (commits <TAG><n>.*)`
+
+A patch is named `<TAG><n>.<k>`, the same string as its commit subject prefix. Patch numbers restart at 1 for each build.
+
+A finished change spec is a record of what was built, not a plan: plan from this layout, never from a finished spec. Retiring a change spec keeps its `Status:` lines.
+
+## Finding and parsing specs
+
+### Find specs
+
+Use the `refines:` frontmatter graph to identify spec files positively:
+
+1. **Files with `refines:` frontmatter** — these are specs. Collect every file path listed in their `refines:` values; those are also specs (parent or root specs). Repeat transitively until no new files are found.
+2. **Remaining Markdown files** (not yet identified) — apply heuristic exclusion: skip README, CHANGELOG, LICENSE, TODO lists, contribution guides, developer runbooks, and coding-conventions or process documents. These describe *how to work on* the project, not *what it must do*, and have no implementable behavioral contract. Any unexcluded remainder is likely a root spec with no children yet.
+
+**Change specs** describe planned, time-bounded changes that fold back into the parent spec once implemented.
+
+By default, change specs live in `docs/todo/`. A project can override this location in its root spec — when scanning, look for an explicit declaration there before falling back to the default.
+
+A change spec links to the spec it amends with a `refines:` frontmatter edge:
+
+```yaml
+---
+refines: docs/spec.md
+---
+```
+
+Lifecycle:
+
+1. Author the change spec in the change-spec folder, with `refines:` to the parent it modifies.
+2. Implement; coverage of its chunks rises to 100%.
+3. Fold the now-stable durable content into the parent spec and retire the change spec; the `onewrap` skill does this.
+
+A change spec at 100% coverage that has not been retired is a smell: either the parent is missing durable content from the change, or the change spec is forgotten. Surface this in reports.
+
+### Extract spec chunks
+
+Read each identified spec file fully, then split it into chunks by heading. Each heading (any level) defines a spec chunk. Record:
+- the heading text
+- the file path
+- the body text under that heading (up to the next heading of same or higher level)
+
+Classify headings that are purely structural — umbrella sections whose normative content lives entirely in their sub-headings, with no prose of their own — as "not applicable" rather than extracting them as independent chunks.
+
+### Scope and search strategy
+
+Limit review work to source code files and Markdown files in the workspace.
+
+Ignore generated, vendored, dependency, build, cache, coverage, lockfile, and binary outputs unless the user explicitly asks to include them.
+
+When classifying evidence:
+- **implementation**: prefer source code files. Markdown may provide supporting context, but do not treat ordinary prose as implementation evidence.
+- **test**: prefer test files, test modules, or executable examples in source code. Markdown examples count only when they are clearly verification artifacts used by the project.
+
+### Search for implementation and tests
+
+For each spec chunk, search the codebase for code and tests that appear to implement or verify it. Use a combination of:
+- semantic search for the concepts described in the chunk
+- grep for key terms, function names, or identifiable phrases from the spec
+
+Classify what you find:
+- **implementation**: source code that appears to implement the behavior described
+- **test**: test code that appears to verify the behavior described
+
+Be conservative. Only claim a match when the code clearly relates to the spec chunk. When uncertain, say so.
+
+### Refinement gaps
+
+When a prompt asks for refinement gaps, use these categories:
+- **Broken refinement edges**: a `refines:` value that does not match any discovered spec file.
+- **Unrefineable breadth**: a spec chunk that is too broad to implement directly, has no child spec refining it, and has no direct implementation.
+
+### Reporting limits
+
+Always report full counts for each section.
+
+When a section would contain more than 10 items, show the 10 most important examples and summarize the remainder as omitted items.
+
+## Rules
+
+- Do not modify any files. This is a read-only review.
+- Do not invent spec chunks that aren't in the spec files.
+- If a spec chunk is too abstract to map to code (e.g., a principle like "Simplicity"), classify it as "not applicable" rather than a gap.
+- If the project has no spec files, say so and stop.
+
+## `(spec)` annotation format
+
+When suggesting `(spec)` annotations, use exactly this format — no variations:
+
+```
+(spec) <heading text>
+```
+
+- No colon after `(spec)`.
+- No file path. The heading alone identifies the chunk.
+- No `§` section sign or any other signs.
+- If two specs share a heading, disambiguate with the parent heading: `(spec) <parent heading> / <heading>`.
+- Use idiomatic comment syntax for the target language (`#`, `//`, `"""..."""`, etc.).
+
+## Required report section: Change specs
+
+Every onboard and review report includes this section, between "Refinement gaps" and "Not applicable":
+
+```
+### Change specs (<count>)
+Spec files in the change-spec folder, with their lifecycle status.
+
+- **<file path>** (`refines: <parent>`) — <covered>/<total> chunks covered
+  - **READY TO RETIRE**: 100% covered; run `onewrap` to fold it into <parent> and retire this file.
+  - or: <count> chunks remaining
+```
+
+If the project has no change specs, omit the section.
+
+
+### Build the spec graph
+
+Draw the refinement graph from `refines:` edges. Identify:
+- the root spec(s)
+- refinement chains (parent → child)
+- broken edges (`refines:` targets that don't match any discovered spec file)
+- leaf specs (specs with no children refining them)
+
+### Produce the onboarding report
+
+Output a structured report in this format:
+
+```
+## OneSpec Onboard — <project name>
+
+### Spec graph
+
+<Root spec>
+├── <Child spec 1>
+│   └── <Grandchild spec>
+└── <Child spec 2>
+
+<total> spec files, <chunks> spec chunks, <edges> refinement edges
+
+### Coverage summary
+
+<covered>/<total> spec chunks covered (<percentage>%)
+<partially> partially covered (implementation or tests, not both)
+<gaps> gaps (neither implementation nor tests)
+
+### What's well covered
+
+Areas where specs have matching implementation and tests.
+
+- **<heading>** (<file path>)
+  - implementation: <file>:<line> — `<function or class>`
+  - test: <file>:<line> — `<test function>`
+
+### What's partially covered
+
+Spec chunks where implementation or tests were found, but not both.
+
+- **<heading>** (<file path>)
+  - implementation: <file>:<line> — `<function>`
+  - test: none found — **gap**
+
+### Gaps
+
+Spec chunks where neither implementation nor tests were found.
+
+- **<heading>** (<file path>) — no implementation or tests found
+
+### Refinement gaps
+
+Spec chunks that are too broad to implement directly and have no child spec
+refining them. Broken `refines:` edges.
+
+- **<heading>** (<file path>) — needs child spec to refine before implementation
+- **<file path>** — `refines: <target>` does not match any spec file
+
+### Not applicable
+
+Spec chunks that describe process, principles, or non-functional aspects
+that don't map to specific code, and umbrella sections whose normative
+content lives entirely in their sub-headings.
+
+- **<heading>** (<file path>) — <reason>
+```
+
+Keep the structure above, but if any section exceeds 10 items, show the 10 most important examples and summarize the remainder.
+
+### Recommend next steps
+
+Based on the report, suggest a prioritized list of actions to improve spec coverage:
+
+1. **Fix broken refinement edges** — these block the graph from working
+2. **Add `(spec)` annotations** — for code and tests that clearly implement spec chunks but lack references
+3. **Write missing tests** — for spec chunks with implementation but no tests
+4. **Write missing specs** — for significant implementation areas with no spec coverage
+5. **Refine broad specs** — spec chunks too broad to implement directly that need child specs
+
+Limit to the top 5–10 most impactful actions.

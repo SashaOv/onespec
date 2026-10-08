@@ -1,0 +1,26 @@
+# OneSpec
+
+Spec-driven software development methodology.
+
+## Skills
+
+| Skill | Use it to |
+|---|---|
+| `onespec` | map a project's specs and where they are not yet matched by code and tests; once per project |
+| `oneplan` | review the previous build and plan the next build and its atomic patches |
+| `onebuild` | execute a planned build, one atomic commit per patch |
+| `onereview` | check spec coverage of what changed |
+| `onewrap` | close a change spec: review everything it changed, fold its durable content into the parent spec, retire it |
+
+`oneplan` and `onebuild` work without a spec graph; adopt them first and grow into the rest.
+
+## Install the skills
+
+This repository is a standard skill directory: `skills/<name>/SKILL.md`.
+
+```sh
+npx skills add SashaOv/onespec
+```
+
+Claude Code users can alternatively add it as a plugin marketplace:
+`/plugin marketplace add SashaOv/onespec`.
