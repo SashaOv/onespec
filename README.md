@@ -11,6 +11,7 @@ Spec-driven software development methodology.
 | `onebuild` | execute a planned build, one atomic commit per patch |
 | `onereview` | check spec coverage of what changed |
 | `onewrap` | close a change spec: review everything it changed, fold its durable content into the parent spec, retire it |
+| `oneturn` | take an unplanned fix or change from report to delivery, to the working tree or as a PR |
 
 `oneplan` and `onebuild` work without a spec graph; adopt them first and grow into the rest.
 
