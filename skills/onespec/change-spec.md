@@ -24,6 +24,7 @@ The spec grows one build at a time. A build is numbered `<TAG><n>` when it is pl
 Each build record begins with a `Status:` line:
 
 - `Status: planned, awaiting author checkpoint`
+- `Status: planned, approved <date>` — the author approved the plan at the checkpoint, by saying so or by invoking `onebuild` on it; the first patch lands it
 - `Status: executed, pending author verification` — every patch is committed, but acceptance has a clause only the author can discharge
 - `Status: implemented <date> (commits <TAG><n>.*)`
 

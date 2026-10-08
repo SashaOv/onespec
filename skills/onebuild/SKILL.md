@@ -7,6 +7,8 @@ description: Execute a planned build's patches in order — implement, verify, r
 
 Input: a planned build with ordered atomic patches (see `oneplan`). For each patch, in sequence:
 
+Approval: if the build record still reads `Status: planned, awaiting author checkpoint`, this invocation is the author's approval. Set `Status: planned, approved <date>` before the first patch; it lands with that patch's checkbox.
+
 1. **Implement** the patch. Stay within its planned scope.
 2. **Verify** the patch demonstrates its planned change: where test-coverable, its test fails before the patch and passes after. The full test suite must be green — the project must be clean for a patch to commit. Green is necessary but not sufficient: if the patch claims a live or external effect (a provider calls us, a platform capability enabled, a credential provisioned), verify by observing that real effect — a synthetic stand-in proves the handler, not the claim. Judge against the planned claim, not a narrowed post-hoc claim. If the real effect cannot be observed as true (never attempted, inconclusive, or denied), stop before commit — missing proof is a block, not a skip.
 3. **Pre-commit checks**:
@@ -46,6 +48,7 @@ The spec grows one build at a time. A build is numbered `<TAG><n>` when it is pl
 Each build record begins with a `Status:` line:
 
 - `Status: planned, awaiting author checkpoint`
+- `Status: planned, approved <date>` — the author approved the plan at the checkpoint, by saying so or by invoking `onebuild` on it; the first patch lands it
 - `Status: executed, pending author verification` — every patch is committed, but acceptance has a clause only the author can discharge
 - `Status: implemented <date> (commits <TAG><n>.*)`
 

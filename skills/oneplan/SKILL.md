@@ -37,6 +37,7 @@ The spec grows one build at a time. A build is numbered `<TAG><n>` when it is pl
 Each build record begins with a `Status:` line:
 
 - `Status: planned, awaiting author checkpoint`
+- `Status: planned, approved <date>` — the author approved the plan at the checkpoint, by saying so or by invoking `onebuild` on it; the first patch lands it
 - `Status: executed, pending author verification` — every patch is committed, but acceptance has a clause only the author can discharge
 - `Status: implemented <date> (commits <TAG><n>.*)`
 
@@ -54,7 +55,7 @@ One cycle turn covers Steps 1–3 below and ends at the author checkpoint. Execu
 Skip if this is the first build of the change spec. The previous build may have been executed by a different agent — review from the record (the change spec and commits tagged `<tag><build>.*`), not from conversation memory.
 
 - Check the commits against the build's planned patches by comparing each commit subject to the patch name literally; note drift.
-- Check that the previous build record has a valid `Status:` line and set it from what the record shows. Flag a fully specified build record without a valid `Status:` line as a defect.
+- Check that the previous build record has a valid `Status:` line and set it from what the record shows. Any of the four statuses the record layout lists is valid, including `planned, approved`. Flag a fully specified build record without a valid `Status:` line as a defect.
 - Check the previous build's "Author action required at completion" items. An outstanding one blocks the next build: present it instead of planning past it.
 - Run the build's acceptance check. Acceptance inherits the live/external rule: green suite alone does not pass a live claim — observe the real effect; missing or denied proof is a block, not a pass. Fix issues and re-verify until it passes, keeping all fixes **uncommitted**.
 - For patches that claimed a live/external effect, confirm the record shows that effect was observed (not only a green suite or synthetic stand-in). A blocked live step that was marked done or skipped is drift.
@@ -106,7 +107,7 @@ Break the build into ordered atomic patches named `<TAG><n>.1…`, the same stri
 
 ## Step 4: Author checkpoint
 
-Make proposed changes to the change spec: append the new build record after the existing ones, with `Status: planned, awaiting author checkpoint`; the backlog stays last.
+Make proposed changes to the change spec: append the new build record after the existing ones, with `Status: planned, awaiting author checkpoint`; the backlog stays last. When the author approves the plan, set `Status: planned, approved <date>`.
 
 Present in one message: 
 - the previous-build review (acceptance result, any uncommitted fix diff with its verification and a proposed commit message, reflection)
