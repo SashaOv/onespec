@@ -22,7 +22,7 @@ When the project has change specs, read [the change-spec record](change-spec.md)
 
 Use the `refines:` frontmatter graph to identify spec files positively:
 
-1. **Files with `refines:` frontmatter** — these are specs. Collect every file path listed in their `refines:` values; those are also specs (parent or root specs). Repeat transitively until no new files are found.
+1. **Files with `refines:` frontmatter** — these are specs. Resolve each path relative to the spec file first; if it does not identify a spec there, resolve it from the repository root. Collect the resolved files; those are also specs (parent or root specs). Repeat transitively until no new files are found.
 2. **Remaining Markdown files** (not yet identified) — apply heuristic exclusion: skip README, CHANGELOG, LICENSE, TODO lists, contribution guides, developer runbooks, and coding-conventions or process documents. These describe *how to work on* the project, not *what it must do*, and have no implementable behavioral contract. Any unexcluded remainder is likely a root spec with no children yet.
 
 **Change specs** describe planned, time-bounded changes that fold back into the parent spec once implemented.
@@ -33,7 +33,7 @@ A change spec links to the spec it amends with a `refines:` frontmatter edge:
 
 ```yaml
 ---
-refines: docs/spec.md
+refines: ../spec.md
 ---
 ```
 
@@ -79,7 +79,7 @@ Be conservative. Only claim a match when the code clearly relates to the spec ch
 ### Refinement gaps
 
 When a prompt asks for refinement gaps, use these categories:
-- **Broken refinement edges**: a `refines:` value that does not match any discovered spec file.
+- **Broken refinement edges**: a `refines:` path that matches no discovered spec file when resolved relative to the spec file first, then from the repository root.
 - **Unrefineable breadth**: a spec chunk that is too broad to implement directly, has no child spec refining it, and has no direct implementation.
 
 ### Reporting limits
@@ -132,9 +132,9 @@ Output a structured report in this format:
 ```
 ## OneSpec Review — <project name>
 
-**Summary**: <covered>/<total> spec chunks covered (<percentage>%), <partially> partially covered, <gaps> gaps, <reverse> implementation behaviors without spec, <retire> change specs ready to retire
+**Summary**: <covered>/<total> spec chunks covered (<percentage>%), <partially> partially covered, <not covered> not covered, <gaps> gaps (partially covered and not covered chunks combined), <reverse> implementation behaviors without spec, <retire> change specs ready to retire
 
-### Gaps (<count>)
+### Not covered (<count>)
 Spec chunks where neither implementation nor tests were found.
 
 - **<heading>** (<file path>) — no implementation or tests found

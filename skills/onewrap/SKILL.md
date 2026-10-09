@@ -51,7 +51,7 @@ A finished change spec is a record of what was built, not a plan: plan from this
 
 Use the `refines:` frontmatter graph to identify spec files positively:
 
-1. **Files with `refines:` frontmatter** — these are specs. Collect every file path listed in their `refines:` values; those are also specs (parent or root specs). Repeat transitively until no new files are found.
+1. **Files with `refines:` frontmatter** — these are specs. Resolve each path relative to the spec file first; if it does not identify a spec there, resolve it from the repository root. Collect the resolved files; those are also specs (parent or root specs). Repeat transitively until no new files are found.
 2. **Remaining Markdown files** (not yet identified) — apply heuristic exclusion: skip README, CHANGELOG, LICENSE, TODO lists, contribution guides, developer runbooks, and coding-conventions or process documents. These describe *how to work on* the project, not *what it must do*, and have no implementable behavioral contract. Any unexcluded remainder is likely a root spec with no children yet.
 
 **Change specs** describe planned, time-bounded changes that fold back into the parent spec once implemented.
@@ -62,7 +62,7 @@ A change spec links to the spec it amends with a `refines:` frontmatter edge:
 
 ```yaml
 ---
-refines: docs/spec.md
+refines: ../spec.md
 ---
 ```
 

@@ -187,7 +187,7 @@ after changes. Neither changes any files. Both report each chunk as:
 
 - **Covered**: implementation and tests both found;
 - **Partially covered**: one of the two found;
-- **Not covered**: neither found; the reports list these under *Gaps*;
+- **Not covered**: neither found;
 - **Not applicable**: a principle or umbrella section that maps to no code.
 
 Partially covered and not covered chunks are both gaps.
