@@ -157,11 +157,12 @@ it, and the text below it, down to the next heading of the same or higher
 level, is its content. There are no requirement IDs; the heading is the
 name, so choose it with care.
 
-A spec that refines another names it in front matter:
+A spec that refines another names it in front matter, by a path relative to
+the spec file (a path from the repository root also works):
 
 ```yaml
 ---
-refines: docs/spec.md
+refines: ../spec.md
 ---
 ```
 
@@ -186,11 +187,13 @@ after changes. Neither changes any files. Both report each chunk as:
 
 - **Covered**: implementation and tests both found;
 - **Partially covered**: one of the two found;
-- **Gap**: neither found;
+- **Not covered**: neither found; the reports list these under *Gaps*;
 - **Not applicable**: a principle or umbrella section that maps to no code.
 
-They also work the other way, reporting behavior in the code that no spec
-describes, and they suggest the `(spec)` references to add.
+Partially covered and not covered chunks are both gaps.
+
+Both skills also work the other way, reporting behavior in the code that no
+spec describes, and they suggest the `(spec)` references to add.
 
 ### Folding a change back
 
@@ -218,7 +221,7 @@ A change spec at its first planning turn:
 
 ```markdown
 ---
-refines: docs/spec.md
+refines: ../spec.md
 ---
 
 # Library card renewal
