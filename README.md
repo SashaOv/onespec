@@ -22,12 +22,12 @@ The [user guide](docs/user.md) explains the concepts and the build loop.
 This repository is a standard skill directory: `skills/<name>/SKILL.md`.
 
 ```sh
-npx skills add SashaOv/onespec
+npx skills add 1spec-driven/onespec
 ```
 
 Claude Code users can alternatively add it as a plugin marketplace and install the plugin:
 
 ```
-/plugin marketplace add SashaOv/onespec
+/plugin marketplace add 1spec-driven/onespec
 /plugin install onespec@onespec
 ```

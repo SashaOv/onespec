@@ -22,13 +22,13 @@ repository.
 ## Install
 
 ```sh
-npx skills add SashaOv/onespec
+npx skills add 1spec-driven/onespec
 ```
 
 In Claude Code you can instead add the repository as a plugin marketplace:
 
 ```
-/plugin marketplace add SashaOv/onespec
+/plugin marketplace add 1spec-driven/onespec
 /plugin install onespec@onespec
 ```
 
