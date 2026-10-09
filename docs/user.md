@@ -8,10 +8,10 @@ do, and OneSpec keeps them current as the product changes:
   its lasting rules are folded back into the product's specs when it is
   implemented.
 - **Light by design.** One prose file per change; a bug fix is a single
-  patch; nothing to run beyond the skills.
+  patch.
 - **One step at a time.** Only the next increment is planned in detail, and
   each plan starts from a review of the one before.
-- **Proof, not promises.** Every build records the evidence that it
+- **Not done until proven.** Every build records the evidence that it
   delivered what it set out to.
 
 OneSpec ships as six agent skills: instructions your coding agent loads when
@@ -36,20 +36,26 @@ Either route installs the same six skills. Update and remove them with the
 tool you installed them with. Invoke a skill by name; in Claude Code that is
 `/oneplan` and so on.
 
-## Three sizes of work
+## Work at different levels
 
-OneSpec gives each size of work its own path, so a small fix never carries
-the ceremony of a feature:
+OneSpec gives each level of work its own path, from a small fix to a feature or milestone:
 
-| Work | Path | Needs specs? |
-|---|---|---|
-| A bug, a failing test, a red CI job, a small change | `onepatch`: one verified patch | no |
-| A planned change | a change spec and the build loop: `oneplan`, `onebuild` | no |
-| The product as a whole | durable specs, coverage review, folding: `onespec`, `onereview`, `onewrap` | yes |
+| Work | Path |
+|---|---|
+| A bug, a failing test, a red CI job, a small change | `onepatch`: one verified patch |
+| A planned change | a change spec and the build loop: `oneplan`, `onebuild` |
+| Product milestone | durable specs, coverage review, folding: `onespec`, `onereview`, `onewrap` |
 
-Start with the first two. They work in any repository, with no spec beyond
-the change spec you write for the work at hand. Durable specs are what the
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="levels-dark.svg">
+  <img src="levels.svg" alt="OneSpec skills at three levels: onespec maps the product's specs once; onepatch handles a standalone update and repeats for the next report; oneplan hands an approved plan to onebuild, which repeats for each patch and returns to oneplan for the next build; oneplan sends a coverage check to onereview and a finished backlog to onewrap.">
+</picture>
+
+Start with **onepatch**. It works in any repository, with no spec. 
+As more changes accumulate, you may want to combine them into a change spec and start the **oneplan - onebuild** loop. Durable specs are what the
 loop grows into.
+
 
 ## Fix or change something now: `onepatch`
 
