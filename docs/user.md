@@ -43,7 +43,7 @@ the ceremony of a feature:
 
 | Work | Path | Needs specs? |
 |---|---|---|
-| A bug, a failing test, a red CI job, a small change | `oneturn`: one verified patch | no |
+| A bug, a failing test, a red CI job, a small change | `onepatch`: one verified patch | no |
 | A planned change | a change spec and the build loop: `oneplan`, `onebuild` | no |
 | The product as a whole | durable specs, coverage review, folding: `onespec`, `onereview`, `onewrap` | yes |
 
@@ -51,9 +51,9 @@ Start with the first two. They work in any repository, with no spec beyond
 the change spec you write for the work at hand. Durable specs are what the
 loop grows into.
 
-## Fix or change something now: `oneturn`
+## Fix or change something now: `onepatch`
 
-Run `oneturn` with a description of the problem, a failing test, or a failed
+Run `onepatch` with a description of the problem, a failing test, or a failed
 GitHub Actions job.
 
 1. **Diagnose.** It reproduces the problem where it can and presents the root
@@ -199,7 +199,7 @@ change spec, keeping its record readable in the project's history.
 
 | Skill | When | What it does |
 |---|---|---|
-| `oneturn` | any time | Takes one unplanned fix or change from report to delivery. |
+| `onepatch` | any time | Takes one unplanned fix or change from report to delivery. |
 | `oneplan` | each build | Reviews the previous build and plans the next one, then stops for your approval. |
 | `onebuild` | each build | Carries out an approved plan, one verified commit per patch, and records the evidence. |
 | `onespec` | once per project | Maps existing specs and their coverage. Changes no files. |

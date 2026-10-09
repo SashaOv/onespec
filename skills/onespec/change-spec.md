@@ -28,6 +28,6 @@ Each build record begins with a `Status:` line:
 - `Status: executed, pending author verification` — every patch is committed, but acceptance has a clause only the author can discharge
 - `Status: implemented <date> (commits <TAG><n>.*)`
 
-A patch is named `<TAG><n>.<k>`, the same string as its commit subject prefix. Patch numbers restart at 1 for each build.
+A patch is one coherent, verified change; inside a build it lands as exactly one commit named `<TAG><n>.<k>`, the same string as its commit subject. Patch numbers restart at 1 for each build.
 
 A finished change spec is a record of what was built, not a plan: plan from this layout, never from a finished spec. Retiring a change spec keeps its `Status:` lines.

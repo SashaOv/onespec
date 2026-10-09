@@ -81,13 +81,13 @@ Böckeler asks what problem size SDD is meant for.
 
 **OneSpec.** Three sizes of work, each with its own path:
 
-- an unplanned fix or small change: `oneturn` diagnoses, confirms with the
+- an unplanned fix or small change: `onepatch` diagnoses, confirms with the
   author only when the remedy is not obvious, and delivers one verified
   patch, with no change spec;
 - a planned change: one change spec file and the build loop;
 - the whole product: the spec graph and coverage review, adopted when wanted.
 
-`oneplan`, `onebuild` and `oneturn` work without any spec graph, so a team
+`oneplan`, `onebuild` and `onepatch` work without any spec graph, so a team
 can adopt the loop first and the graph later.
 
 ### Less to review
@@ -176,7 +176,7 @@ For the website, in this order:
 4. **Proof, not promises.** Every build records the evidence that it
    delivered.
 
-For the user guide: lead with the build loop and `oneturn`, since they work
+For the user guide: lead with the build loop and `onepatch`, since they work
 without a spec graph, and introduce the graph as what the loop grows into.
 
 Words to use as defined: durable spec, change spec, build, patch, acceptance,

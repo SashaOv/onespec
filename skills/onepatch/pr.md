@@ -7,7 +7,7 @@ Read this when delivering as a pull request. The branch carries the fix through 
 Do all PR work in its own worktree, from a clean state of the delivery base. For CI input the base is the failing commit's `head-sha`; otherwise it is the current checkout's tip.
 
 - CI input: branch `repair/<job-id>` (digits only for the id segment).
-- Other input: branch `turn/<slug>`, a short slug of the fix.
+- Other input: branch `patch/<slug>`, a short slug of the fix.
 
 ```sh
 git fetch origin

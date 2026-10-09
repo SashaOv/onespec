@@ -1,9 +1,9 @@
 ---
-name: oneturn
+name: onepatch
 description: Take an unplanned fix or change from report to delivery — diagnose, confirm with the author, run test-fail-fix-reflect, and deliver to the working tree or as a PR.
 ---
 
-# One Turn
+# One Patch
 
 Given a problem description, a failing test, or a failed GitHub Actions job, diagnose it, confirm the remedy with the author, fix it, and deliver — either to the working tree or as a pull request with every blocking check green.
 
