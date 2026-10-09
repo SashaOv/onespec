@@ -81,6 +81,8 @@ Skip if this is the first build of the change spec. The previous build may have 
   the harness itself, so the executor records them rather than discovers them.
   A script never substitutes for observing a live effect; Step 1's rule is not
   relaxed by this one.
+- Place each check of an external contract on the patch that introduces it;
+  final acceptance re-checks it, it does not discover it.
 - Edit the acceptance harness during this turn. The per-build delta is part of
   the plan the checkpoint presents, not something execution improvises.
 - For each acceptance clause, ask who can execute it. A clause only the author can discharge (a write to a personal account, a production change, a physical observation, a paid call, a credential the agent does not hold) goes in an "Author action required at completion" section of the build, beside the patches rather than inside the acceptance prose. Name each action, who does it, and the clause it discharges. Shape it for a human: one reviewable file beats many interactive prompts.
