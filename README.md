@@ -15,6 +15,8 @@ Spec-driven software development methodology.
 
 `oneplan` and `onebuild` work without a spec graph; adopt them first and grow into the rest.
 
+The [user guide](docs/user.md) explains the concepts and the build loop.
+
 ## Install the skills
 
 This repository is a standard skill directory: `skills/<name>/SKILL.md`.
